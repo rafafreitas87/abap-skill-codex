@@ -1,0 +1,6 @@
+interface:
+  display_name: "ABAP RAP ADT"
+  short_description: "Build ABAP RAP with SAP ADT MCP"
+  default_prompt: "Use $abap-rap-adt to inspect a RAP package and implement the next ABAP Cloud change via SAP ADT MCP."
+policy:
+  allow_implicit_invocation: true
