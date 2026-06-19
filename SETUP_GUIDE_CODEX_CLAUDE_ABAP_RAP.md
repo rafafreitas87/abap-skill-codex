@@ -160,7 +160,7 @@ claude mcp list
 Para Claude, as skills Codex nao sao carregadas automaticamente como skills nativas. Use uma destas opcoes:
 
 - copie o conteudo essencial de `abap-rap-adt/SKILL.md` para `CLAUDE.md` do projeto;
-- ou pe??a explicitamente: `Use o guia em abap-rap-adt/SKILL.md para trabalhar com RAP ABAP`.
+- ou peca explicitamente: `Use o guia em abap-rap-adt/SKILL.md para trabalhar com RAP ABAP`.
 
 ## 6. Instalar a Skill Codex
 
