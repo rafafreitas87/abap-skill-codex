@@ -28,6 +28,47 @@ Use this skill to work on ABAP RAP applications through a connected SAP ADT MCP 
 - Ask before creating or selecting a transport request. For `$TMP`, make clear that the work is local/non-transportable.
 - Never invent ATC results, repository object contents, service URLs, or generated names. Fetch them through MCP or ask the user for source/output.
 
+## S4H ARC-1 ZTRF Defaults
+
+Use these defaults when the user asks for new RAP work in the ZTRF S/4HANA exercise landscape, unless they explicitly override them:
+
+- ADT destination: `S4H_100_MGLDEV01_EN`.
+- ARC-1 endpoint: `https://20.62.45.108:44300`, client `100`, user `MGLDEV01`, insecure TLS enabled for the lab certificate.
+- ARC-1/HTTP writes require a SAP password. Before running write, publish, activation, or direct OData test commands, ensure `SAP_PASSWORD` is set for the current shell/session; if it is not set, ask the user for the password.
+- Never store or write the SAP password value in a skill, repo file, script, payload, or final answer. Keep it only in the current process environment or transient command context.
+- ARC-1 writes require explicit safety env vars: `SAP_ALLOW_WRITES=true`, `SAP_ALLOWED_PACKAGES=<package>`, `SAP_ALLOWED_TRANSPORTS=<transport>`.
+- For classes with `FOR BEHAVIOR OF ...`, set ARC-1 payload field `lintBeforeWrite: false` when the generic lint rejects valid behavior pool syntax.
+- Prefer official ADT MCP for package/transport checks, service discovery, and verification; use ARC-1 for repository writes that official ADT MCP cannot perform.
+
+For new ZTRF RAP business objects in this landscape:
+
+- Default to managed RAP, draft-enabled, OData V4 UI service, strict mode 2.
+- Use the package and transport the user provides; do not assume them across tasks.
+- Use semantic business keys with late numbering when requested, not UUID-only business design.
+- Create the full stack: persistence table, draft table, interface/root CDS, projection CDS, root/projection BDEF, behavior pool, metadata extension, service definition, service binding.
+- Expose list columns and filter fields through DDLX using `@UI.lineItem`, `@UI.identification`, and `@UI.selectionField`.
+- Publish the OData V4 service binding after activation, then verify with service metadata or ADT business service tools.
+
+For composition items:
+
+- Let RAP draft/composition control item creation state. Avoid over-custom logic that rewrites item collections while the UI is creating rows.
+- If the UX needs a default first item, implement it in the projection BDEF with `use create ( augment )` and a projection behavior class using `MODIFY AUGMENTING ENTITIES`.
+- Use a SAP-accepted default unit such as `EA` for simple item examples.
+- Be careful with late numbering for child items: never assign the same initial item number to multiple draft children. Number children sequentially within the same save/activation and per parent order.
+- Do not trigger total recalculation from a field that the calculation itself updates; avoid loops such as `NetAmount` determination updating `NetAmount` and then retriggering total logic.
+
+For material value help and pricing:
+
+- Use a stable value help entity for selecting existing materials; avoid pointing item value help at an unstable draft editing surface when a read-only/value-help projection is more appropriate.
+- Validate that `ProductID` exists before save.
+- Load item currency and net amount from material price when product and quantity are provided.
+- Calculate header total from item amounts/quantities, and make calculated amount fields readonly in the BDEF.
+
+For custom actions:
+
+- Define the action in the root BDEF, implement it in the behavior pool with `FOR MODIFY ... FOR ACTION ... RESULT result`, expose it in the projection BDEF with `use action`, and add a list-page button with `@UI.lineItem: [{ type: #FOR_ACTION, dataAction: '<ActionName>', ... }]`.
+- For a simple block action, model a header field such as `Blocked` and update it to `X` in local mode.
+
 ## Standard Workflow
 
 1. Discover context:
