@@ -30,6 +30,8 @@ npm --version
 
 ## 2. Conexao SAP no Eclipse ou VS Code
 
+Antes de configurar Codex/Claude, o ambiente de desenvolvimento precisa ter ABAP ADT instalado e uma destination/projeto ADT criada. O MCP oficial ADT e o ARC-1 dependem dessa base funcionando.
+
 Crie uma conexao ADT para o sistema:
 
 - Host/IP: `20.62.45.108`
@@ -43,14 +45,16 @@ No Eclipse:
 1. Instale ABAP Development Tools.
 2. Crie um ABAP Project apontando para o host/porta/client acima.
 3. Faca login com o usuario SAP.
-4. Confirme que consegue abrir o pacote de trabalho, por exemplo `ZTRF01004`.
+4. Salve a conexao/destination ADT.
+5. Confirme que consegue abrir o pacote de trabalho, por exemplo `ZTRF01004`.
 
 No VS Code:
 
-1. Instale as extensoes ABAP/ADT usadas pelo time.
-2. Configure a mesma conexao ADT.
-3. Confirme que consegue navegar pelo pacote ABAP.
-4. Inicie o servidor MCP ADT oficial se a extensao/ferramenta exigir uma acao manual.
+1. Instale a extensao/ferramenta ABAP ADT usada pelo time.
+2. Configure a mesma conexao/destination ADT.
+3. Faca login com o usuario SAP.
+4. Confirme que consegue navegar pelo pacote ABAP.
+5. Inicie o servidor MCP ADT oficial se a extensao/ferramenta exigir uma acao manual.
 
 O Codex nesta maquina espera o MCP ADT em:
 
