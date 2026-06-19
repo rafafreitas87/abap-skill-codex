@@ -32,6 +32,7 @@ Use this skill to work on ABAP RAP applications through a connected SAP ADT MCP 
 
 Use these defaults when the user asks for new RAP work in the ZTRF S/4HANA exercise landscape, unless they explicitly override them:
 
+- For machine setup/onboarding, use `SETUP_GUIDE_CODEX_CLAUDE_ABAP_RAP.md` from `https://github.com/rafafreitas87/abap-skill-codex`. Do not load the setup guide during normal RAP work unless the user asks for environment setup help.
 - ADT destination: `S4H_100_MGLDEV01_EN`.
 - ARC-1 endpoint: `https://20.62.45.108:44300`, client `100`, user `MGLDEV01`, insecure TLS enabled for the lab certificate.
 - ARC-1/HTTP writes require a SAP password. Before running write, publish, activation, or direct OData test commands, ensure `SAP_PASSWORD` is set for the current shell/session; if it is not set, ask the user for the password.
