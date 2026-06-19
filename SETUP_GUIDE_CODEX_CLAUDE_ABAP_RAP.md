@@ -6,7 +6,7 @@ Este guia prepara uma maquina Windows para trabalhar com ABAP RAP usando:
 - MCP oficial ADT exposto em `http://127.0.0.1:2236/mcp`
 - ARC-1 para leitura/escrita de objetos ABAP via ADT
 - Skill Codex `abap-rap-adt`
-- Sistema S/4HANA lab `S4H` client `100`
+- Qualquer sistema ABAP/S/4HANA com ADT habilitado, incluindo on-premise
 
 Nao salve senha em arquivos. A senha SAP deve ser informada na sessao ou em variavel de ambiente temporaria.
 
@@ -34,11 +34,11 @@ Antes de configurar Codex/Claude, o ambiente de desenvolvimento precisa ter ABAP
 
 Crie uma conexao ADT para o sistema:
 
-- Host/IP: `20.62.45.108`
-- Porta HTTPS: `44300`
-- Client: `100`
-- User: `MGLDEV01`
-- Destination esperada no MCP: `S4H_100_MGLDEV01_EN`
+- Host/IP ou FQDN: `<HOST_OU_IP>`
+- Porta HTTPS: `<PORTA_HTTPS>`
+- Client: `<CLIENT>`
+- User: `<SAP_USER>`
+- Destination esperada no MCP: `<ADT_DESTINATION_NAME>`
 
 No Eclipse:
 
@@ -46,7 +46,7 @@ No Eclipse:
 2. Crie um ABAP Project apontando para o host/porta/client acima.
 3. Faca login com o usuario SAP.
 4. Salve a conexao/destination ADT.
-5. Confirme que consegue abrir o pacote de trabalho, por exemplo `ZTRF01004`.
+5. Confirme que consegue abrir o pacote de trabalho, por exemplo `<PACOTE>`.
 
 No VS Code:
 
@@ -81,9 +81,9 @@ arc1 --help
 Configure as variaveis de ambiente para a sessao PowerShell:
 
 ```powershell
-$env:SAP_URL='https://20.62.45.108:44300'
-$env:SAP_CLIENT='100'
-$env:SAP_USER='MGLDEV01'
+$env:SAP_URL='https://<HOST_OU_IP>:<PORTA_HTTPS>'
+$env:SAP_CLIENT='<CLIENT>'
+$env:SAP_USER='<SAP_USER>'
 $env:SAP_PASSWORD='<NAO_COMMITAR_SENHA>'
 $env:SAP_INSECURE='true'
 ```
@@ -92,20 +92,20 @@ Para permitir escrita, informe tambem o pacote e transporte do trabalho atual:
 
 ```powershell
 $env:SAP_ALLOW_WRITES='true'
-$env:SAP_ALLOWED_PACKAGES='ZTRF01004'
-$env:SAP_ALLOWED_TRANSPORTS='S4HK903338'
+$env:SAP_ALLOWED_PACKAGES='<PACOTE>'
+$env:SAP_ALLOWED_TRANSPORTS='<TRANSPORTE>'
 ```
 
 Teste leitura:
 
 ```powershell
-arc1 call SAPRead --arg type=DEVC --arg name=ZTRF01004
+arc1 call SAPRead --arg type=DEVC --arg name=<PACOTE>
 ```
 
 Ou leia um objeto conhecido:
 
 ```powershell
-arc1 read DDLS ZTRF_C_EC_ORDER
+arc1 read DDLS <OBJETO_DDLS_EXISTENTE>
 ```
 
 ## 4. Configurar Codex com MCP ADT
@@ -188,7 +188,7 @@ Reinicie Codex.
 Quando iniciar um trabalho RAP, diga algo como:
 
 ```text
-Use a skill abap-rap-adt. Sistema S4H client 100, pacote ZTRF01004, transporte S4HK903338.
+Use a skill abap-rap-adt. Sistema <ADT_DESTINATION_NAME>, client <CLIENT>, pacote <PACOTE>, transporte <TRANSPORTE>.
 Antes de escrita ARC-1, confirme SAP_PASSWORD na sessao.
 ```
 
@@ -197,9 +197,9 @@ Antes de escrita ARC-1, confirme SAP_PASSWORD na sessao.
 Antes de criar/alterar objetos ABAP com ARC-1:
 
 ```powershell
-$env:SAP_URL='https://20.62.45.108:44300'
-$env:SAP_CLIENT='100'
-$env:SAP_USER='MGLDEV01'
+$env:SAP_URL='https://<HOST_OU_IP>:<PORTA_HTTPS>'
+$env:SAP_CLIENT='<CLIENT>'
+$env:SAP_USER='<SAP_USER>'
 $env:SAP_PASSWORD='<SENHA_DA_SESSAO>'
 $env:SAP_INSECURE='true'
 $env:SAP_ALLOW_WRITES='true'

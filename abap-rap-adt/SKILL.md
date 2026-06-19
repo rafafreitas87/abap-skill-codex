@@ -28,13 +28,14 @@ Use this skill to work on ABAP RAP applications through a connected SAP ADT MCP 
 - Ask before creating or selecting a transport request. For `$TMP`, make clear that the work is local/non-transportable.
 - Never invent ATC results, repository object contents, service URLs, or generated names. Fetch them through MCP or ask the user for source/output.
 
-## S4H ARC-1 ZTRF Defaults
+## ARC-1 RAP Defaults
 
-Use these defaults when the user asks for new RAP work in the ZTRF S/4HANA exercise landscape, unless they explicitly override them:
+Use these defaults when the user asks for new RAP work on an ABAP/S/4HANA system, including on-premise systems, unless they explicitly override them:
 
 - For machine setup/onboarding, use `SETUP_GUIDE_CODEX_CLAUDE_ABAP_RAP.md` from `https://github.com/rafafreitas87/abap-skill-codex`. Do not load the setup guide during normal RAP work unless the user asks for environment setup help.
-- ADT destination: `S4H_100_MGLDEV01_EN`.
-- ARC-1 endpoint: `https://20.62.45.108:44300`, client `100`, user `MGLDEV01`, insecure TLS enabled for the lab certificate.
+- Require the system connection details before writes: ADT destination name, host or HTTPS URL, HTTPS port, SAP client, SAP user, package, and transport.
+- ARC-1 endpoint format: `https://<host-or-ip>:<https-port>`, with `SAP_CLIENT=<client>` and `SAP_USER=<user>`.
+- Use `SAP_INSECURE=true` only for lab/on-premise certificates that are not trusted by the local machine.
 - ARC-1/HTTP writes require a SAP password. Before running write, publish, activation, or direct OData test commands, ensure `SAP_PASSWORD` is set for the current shell/session; if it is not set, ask the user for the password.
 - Never store or write the SAP password value in a skill, repo file, script, payload, or final answer. Keep it only in the current process environment or transient command context.
 - ARC-1 writes require explicit safety env vars: `SAP_ALLOW_WRITES=true`, `SAP_ALLOWED_PACKAGES=<package>`, `SAP_ALLOWED_TRANSPORTS=<transport>`.
