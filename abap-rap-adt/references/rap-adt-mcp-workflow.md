@@ -86,6 +86,32 @@ When activation fails:
 
 Do not continue building additional layers while lower layers fail activation.
 
+## Post-Creation Smoke Test
+
+After creating, activating, and publishing a new RAP OData V4 UI service, run a minimal transactional smoke test before reporting success. Do this for draft-enabled create scenarios, especially header/item composition BOs and BOs using late numbering.
+
+Minimum test:
+
+1. Read `$metadata` from the published service binding and confirm the expected entity sets/actions are exposed.
+2. Fetch a CSRF token and keep cookies only in the transient process/session.
+3. Create a root/header draft through OData without supplying the late-numbered semantic key.
+4. For composition BOs, create at least one child/item draft through the parent navigation property.
+5. Call the draft `Activate` action.
+6. Query the active root and child entities and confirm generated keys changed from initial draft values such as `0` to real numbers.
+7. Report only the useful result: HTTP statuses, generated root key, generated child key, and any exact failure message.
+
+For OData V4 draft keys, inspect `$metadata` before forming URLs. Draft entities can include `DraftUUID` in the key, so a manual URL may need keys such as `RootID`, `DraftUUID`, and `IsActiveEntity`.
+
+If the smoke test fails after activation succeeds, keep working unless the failure is environmental. Fix URI syntax, draft key usage, behavior pool late numbering, service publication, or missing handler logic before saying the RAP is done.
+
+## Token-Economy Rules
+
+- Keep user-facing updates short; do not paste full payloads, full metadata, or full activation logs unless the exact text is needed to fix a blocker.
+- Prefer one compact script or one structured ARC-1 call over many exploratory commands when testing OData flows.
+- Summarize package scans by object names and roles, not raw JSON.
+- When a command emits large output, extract only the status, object names, generated keys, and exact diagnostics.
+- In final reports, use the standard scope/changed objects/activation/verification shape and keep it concise.
+
 ## Transport Handling
 
 - `$TMP` is acceptable only for throwaway work.
